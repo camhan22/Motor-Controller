@@ -1160,12 +1160,12 @@ $Comp
 L Device:Jumper_NO_Small JP3
 U 1 1 60CC469F
 P 2600 3550
-F 0 "JP3" H 2600 3365 50  0000 C CNN
-F 1 "Program/Reset" H 2550 3450 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical_SMD_Pin1Right" H 2600 3550 50  0001 C CNN
+F 0 "JP3" H 2600 3650 50  0000 C CNN
+F 1 "Program/Reset" H 2650 3600 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 2600 3550 50  0001 C CNN
 F 3 "~" H 2600 3550 50  0001 C CNN
 	1    2600 3550
-	-1   0    0    1   
+	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	2350 3300 2350 3550
@@ -1182,4 +1182,37 @@ Wire Wire Line
 Wire Wire Line
 	2700 3550 2850 3550
 Connection ~ 2850 3550
+$Comp
+L Mechanical:MountingHole H1
+U 1 1 60CD765C
+P 8500 700
+F 0 "H1" H 8600 746 50  0000 L CNN
+F 1 "MountingHole" H 8600 655 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 8500 700 50  0001 C CNN
+F 3 "~" H 8500 700 50  0001 C CNN
+	1    8500 700 
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H2
+U 1 1 60CD840C
+P 8500 900
+F 0 "H2" H 8600 946 50  0000 L CNN
+F 1 "MountingHole" H 8600 855 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 8500 900 50  0001 C CNN
+F 3 "~" H 8500 900 50  0001 C CNN
+	1    8500 900 
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H3
+U 1 1 60CD8691
+P 8500 1100
+F 0 "H3" H 8600 1146 50  0000 L CNN
+F 1 "MountingHole" H 8600 1055 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 8500 1100 50  0001 C CNN
+F 3 "~" H 8500 1100 50  0001 C CNN
+	1    8500 1100
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
