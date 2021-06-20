@@ -1,15 +1,15 @@
 /*
    MOTOR CONTROLLER CODE 2020
    BY: CAMERON HANSON
-   REVISION: 2.1
-   RELEASE DATE: 06/05/2021
+   REVISION: 2.2
+   RELEASE DATE: 06/20/2021
 
    RELEASE NOTES:
-   V2.0, Changed controller to a more robust driver that handles more features of the H-Bridge. The microcontroller just converts the I2C into a PWM and direction for the driver as well as checking faults)
+   V2.2, Fixed a bug that would have caused the kart to slam to a stop if a false reset code was sent when no fault existed and restructured the code to be more readable
    V2.1, Added fault line from driver chip to code and added some fault codes to be put to the main controller if the driver chip is faulted
+   V2.0, Changed controller to a more robust driver that handles more features of the H-Bridge. The microcontroller just converts the I2C into a PWM and direction for the driver as well as checking faults)
 
    THINGS TO UPDATE:
-   VDS requires a blanking time and as such, we may get a bunch of VDS faults. This will have to be changed in the circuitry
    END THINGS TO UPDATE:
 
    Definitions:
@@ -102,31 +102,32 @@ void setup() {
 void loop() {
   current_time = millis(); // Get the current time of the system
 
-  if (current_time - last_receive_time < watchdog_time_limit && !fault) { // Check if commands have stopped for too long
-    setSpeedandDir(); // Set the speed and direction of the motor driver
-  } else {
-    controller_status = 1;// A watchdog timer fault has occured. Stop the system and put that as the controller status. This can be cleared by the master controller
-    fault = 1;
-    killMotors(0); //Kill the motors but shutdown in non-emergency way
+  if (fault == 1) { //If there is an active fault, wait for a reset event, it is the only thing the controller should be doing
+    if (reset == 1) { //Wait for a reset event to come in
+      resetDriver(); // Reset the driver chip just to make sure any faults are cleared since they can cause the system to fail
+      waitForZeroThrottle();  // If the system was reset, wait for the throttle to go to zero before giving control back
+      fault = 0; // Make sure the fault flag is cleared since the system is no longer faulted
+      reset = 0; // The reset has been completed
+      controller_status = 0; // The system should be good after this
+    }
+  } else { //If no active faults exist, check for new ones and if none exist, then set the speed and direction
+    if (current_time - last_receive_time > watchdog_time_limit) { // Check if commands have stopped for too long
+      controller_status = 1;
+      fault = 1;
+      killMotors(0); //Kill the motors but shutdown in non-emergency way
+    }
+    // If the driver chip is in fault mode, then let the arduino know. There isn't a way  to tell why the driver has failed but there are only a few causes
+    // Causes: A VDS fault has occured meaning it saw too much voltage across the mosfet and could be damaged
+    // Causes: Internal current limit has tripped (This is disabled in this version and cannot occur)
+    if (digitalRead(FaultPin) == 0) {
+      fault = 1;
+      controller_status = 2; // This code means the driver chip has faulted in some way. Can be reset by sending a reset command to the controller
+      killMotors(0); //Kill the motors but shutdown in non-emergency way
+    }
+      
+    setSpeedandDir(); // Set the speed and direction of the motor driver (If any faults occur on the way, the speed will be set to zero by the time it gets here)
+    delay(100); //Delay the system from updating too often
   }
-  // If the driver chip is in fault mode, then let the arduino know. There isn't a way  to tell why the driver has failed but there are only a few causes
-  // Causes: A VDS fault has occured meaning it saw too much voltage across the mosfet and could be damaged
-  // Causes: Internal current limit has tripped (This is disabled in this version and cannot occur)
-  if (digitalRead(FaultPin) == 0) {
-    fault = 1;
-    controller_status = 2; // This code means the driver chip has faulted in some way. Can be reset by sending a reset command to the controller
-    killMotors(0); //Kill the motors but shutdown in non-emergency way
-  }
-
-  //Check if the system was reset on every loop
-  if (reset == 1) {
-    resetDriver(); // Reset the driver chip just to make sure any faults are cleared since they can cause the system to fail
-    waitForZeroThrottle();  // If the system was reset, wait for the throttle to go to zero before giving control back
-    fault = 0; // Make sure the fault flag is cleared since the system is no longer faulted
-    reset = 0; // The reset has been completed
-    controller_status = 0; // The system should be good after this
-  }
-  delay(100); //Delay the system from updating too often
 }
 
 void setup_FAST_PWM() {
@@ -171,6 +172,7 @@ void setSpeedandDir() {
 
 void killMotors(bool emergency) { // Function to kill the motors
   int delay_time;
+  duty_cycle = 0; //If the motors need to be shut down, make sure the command driving them is also turned off
   if (emergency) { // If it is an emergency, stop the motors immediately
     OCR1B = 0;
   } else {
@@ -201,7 +203,7 @@ void checkReset() { // Checks to see if the system has been issued the reset com
   if (recieve_byte == 112) { // If the byte coming in is 112 (Normally not something sent to the controller) then increase the counter
     reset_count++;
   }
-  else if (reset_count >= 1 && recieve_byte == 229) { //otherwise reset the counter
+  else if (reset_count >= 1 && recieve_byte == 229 && fault == 1) { //otherwise reset the counter
     reset = 1;
     reset_count = 0;
   }
@@ -215,11 +217,11 @@ void resetDriver() {
   byte t1 = TCCR1A;
   byte t2 = TCCR1B;
   byte t3 = PORTB;
-  
+
   TCCR1A = 0;
   TCCR1B = 0;
   delay(50);
-  
+
   PORTB &= ~(1 << PB4); // Write a 0 to PB4 (Enable pin on driver)
   delay(10); // Allow the system to reset
   PORTB |= (1 << PB4); // Write a 1 to PB4
