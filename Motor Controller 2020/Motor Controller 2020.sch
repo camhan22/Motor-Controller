@@ -787,7 +787,7 @@ Text GLabel 1050 3300 2    50   Input ~ 0
 A_RESET
 Wire Wire Line
 	950  3300 1050 3300
-Text GLabel 3050 3550 2    50   Input ~ 0
+Text GLabel 2550 3650 1    50   Input ~ 0
 A_RESET
 $Comp
 L Motor-Controller-2020-rescue:a4956-Created_Components U2
@@ -1156,32 +1156,10 @@ Wire Wire Line
 Connection ~ 7850 4150
 Wire Wire Line
 	7850 4150 8000 4150
-$Comp
-L Device:Jumper_NO_Small JP3
-U 1 1 60CC469F
-P 2600 3550
-F 0 "JP3" H 2600 3650 50  0000 C CNN
-F 1 "Program/Reset" H 2650 3600 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 2600 3550 50  0001 C CNN
-F 3 "~" H 2600 3550 50  0001 C CNN
-	1    2600 3550
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	2350 3300 2350 3550
 Wire Wire Line
 	2550 3750 2550 3650
-Wire Wire Line
-	2550 3650 2850 3650
-Wire Wire Line
-	2850 3650 2850 3550
-Wire Wire Line
-	2850 3550 3050 3550
-Wire Wire Line
-	2350 3550 2500 3550
-Wire Wire Line
-	2700 3550 2850 3550
-Connection ~ 2850 3550
 $Comp
 L Mechanical:MountingHole H1
 U 1 1 60CD765C
