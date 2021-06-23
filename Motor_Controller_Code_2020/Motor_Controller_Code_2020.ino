@@ -23,7 +23,7 @@
 //END LIBRARIES//
 
 //DEFINES// These will save a slight amount of space for things that cannot change mid run
-#define frequency 20000 // Frequency of the motor driver (minimum is 1.5kHz due to standby mode timer on the A4956 driver chip)
+#define frequency 25000 // Frequency of the motor driver (minimum is 1.5kHz due to standby mode timer on the A4956 driver chip)
 #define start_up_delay 2000 // Specifies how long to take ramping the controller down
 #define rampDownTime 2000 // Controller must be at zero on I2C for greater than this value to allow user control
 #define watchdog_time_limit 2000 //Specifies how often the system should get a message in milliseconds
@@ -214,12 +214,6 @@ void checkReset() { // Checks to see if the system has been issued the reset com
 }
 
 void resetDriver() {
-  //Save the current configuration to restore back to it after the reset
-  byte t1 = TCCR1A;
-  byte t2 = TCCR1B;
-  byte t3 = PORTB;
-  byte t4 = DDRB;
-  byte t5 = ICR1;
 
   noInterrupts(); //Disable interrupts because it can screw up the timing if a recieve event comes in while this is happening
   TCCR1A = 0; //Set PORTB to be normal operation (timer stopped)
@@ -233,13 +227,6 @@ void resetDriver() {
   PORTB &= ~(1 << PB4); //Write a zero to stop it from being active during the reset
   delayMicroseconds(400); //Delay 400us to ensure the driver has been started properly before continuing (The actual time of this doesn't matter as long as it is not greater than 700us since that is the shortest time to standy for the driver chip)
 
-  //Restore operation as was before resetting the driver
-  TCCR1A = t1;
-  TCCR1B = t2;
-  PORTB = t3;
-  DDRB = t4;
-  ICR1 = t5; 
-
+  setup_FAST_PWM();
   interrupts(); //Allow interrupts after the driver chip is fully reset
-  OCR1B = 0; //Set the PWM signal to 0 so it doesn't take off.(Not really needed since a wait for throttle usually follows)
 }
