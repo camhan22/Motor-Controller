@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source "C:\\Users\\chanson\\Desktop\\Motor-Controller-main\\Motor Controller 2020\\Motor Controller 2020.sch")
-    (date "6/30/2021 3:20:38 PM")
+    (date "6/30/2021 5:01:58 PM")
     (tool "Eeschema (5.1.9)-1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -17,7 +17,7 @@
   (components
     (comp (ref Q7)
       (value IRF1404)
-      (footprint Package_TO_SOT_SMD:TO-263-3_TabPin2)
+      (footprint Package_TO_SOT_SMD:TO-263-2)
       (datasheet https://www.infineon.com/dgdl/Infineon-IRF40DM229-DS-v02_00-EN.pdf?fileId=5546d462557e6e890155a15c899160ea)
       (fields
         (field (name Spice_Model) IRF1404)
@@ -76,7 +76,7 @@
       (tstamp 60C083D3))
     (comp (ref Q6)
       (value IRF1404)
-      (footprint Package_TO_SOT_SMD:TO-263-3_TabPin2)
+      (footprint Package_TO_SOT_SMD:TO-263-2)
       (datasheet https://www.infineon.com/dgdl/Infineon-IRF40DM229-DS-v02_00-EN.pdf?fileId=5546d462557e6e890155a15c899160ea)
       (fields
         (field (name Spice_Model) IRF1404)
@@ -87,7 +87,7 @@
       (tstamp 609CB6EF))
     (comp (ref Q3)
       (value IRF1404)
-      (footprint Package_TO_SOT_SMD:TO-263-3_TabPin2)
+      (footprint Package_TO_SOT_SMD:TO-263-2)
       (datasheet https://www.infineon.com/dgdl/Infineon-IRF40DM229-DS-v02_00-EN.pdf?fileId=5546d462557e6e890155a15c899160ea)
       (fields
         (field (name Spice_Model) IRF1404)
@@ -98,7 +98,7 @@
       (tstamp 609CBF98))
     (comp (ref Q1)
       (value IRF1404)
-      (footprint Package_TO_SOT_SMD:TO-263-3_TabPin2)
+      (footprint Package_TO_SOT_SMD:TO-263-2)
       (datasheet https://www.infineon.com/dgdl/Infineon-IRF40DM229-DS-v02_00-EN.pdf?fileId=5546d462557e6e890155a15c899160ea)
       (fields
         (field (name Spice_Model) IRF1404)
@@ -109,7 +109,7 @@
       (tstamp 609CDD55))
     (comp (ref Q2)
       (value IRF1404)
-      (footprint Package_TO_SOT_SMD:TO-263-3_TabPin2)
+      (footprint Package_TO_SOT_SMD:TO-263-2)
       (datasheet https://www.infineon.com/dgdl/Infineon-IRF40DM229-DS-v02_00-EN.pdf?fileId=5546d462557e6e890155a15c899160ea)
       (fields
         (field (name Spice_Model) IRF1404)
@@ -120,7 +120,7 @@
       (tstamp 609CF79E))
     (comp (ref Q4)
       (value IRF1404)
-      (footprint Package_TO_SOT_SMD:TO-263-3_TabPin2)
+      (footprint Package_TO_SOT_SMD:TO-263-2)
       (datasheet https://www.infineon.com/dgdl/Infineon-IRF40DM229-DS-v02_00-EN.pdf?fileId=5546d462557e6e890155a15c899160ea)
       (fields
         (field (name Spice_Model) IRF1404)
@@ -131,7 +131,7 @@
       (tstamp 609D01D3))
     (comp (ref Q5)
       (value IRF1404)
-      (footprint Package_TO_SOT_SMD:TO-263-3_TabPin2)
+      (footprint Package_TO_SOT_SMD:TO-263-2)
       (datasheet https://www.infineon.com/dgdl/Infineon-IRF40DM229-DS-v02_00-EN.pdf?fileId=5546d462557e6e890155a15c899160ea)
       (fields
         (field (name Spice_Model) IRF1404)
@@ -142,7 +142,7 @@
       (tstamp 609D0EA0))
     (comp (ref Q8)
       (value IRF1404)
-      (footprint Package_TO_SOT_SMD:TO-263-3_TabPin2)
+      (footprint Package_TO_SOT_SMD:TO-263-2)
       (datasheet https://www.infineon.com/dgdl/Infineon-IRF40DM229-DS-v02_00-EN.pdf?fileId=5546d462557e6e890155a15c899160ea)
       (fields
         (field (name Spice_Model) IRF1404)
@@ -672,8 +672,8 @@
       (node (ref U3) (pin 5))
       (node (ref U2) (pin 16)))
     (net (code 20) (name "Net-(L1-Pad1)")
-      (node (ref U1) (pin 8))
-      (node (ref L1) (pin 1)))
+      (node (ref L1) (pin 1))
+      (node (ref U1) (pin 8)))
     (net (code 21) (name "Net-(U1-Pad6)")
       (node (ref U1) (pin 6)))
     (net (code 22) (name "Net-(U1-Pad5)")
@@ -682,10 +682,10 @@
       (node (ref C7) (pin 1))
       (node (ref U1) (pin 3)))
     (net (code 24) (name +5V)
-      (node (ref U2) (pin 17))
-      (node (ref C2) (pin 1))
-      (node (ref L1) (pin 2))
       (node (ref U3) (pin 18))
+      (node (ref L1) (pin 2))
+      (node (ref C2) (pin 1))
+      (node (ref U2) (pin 17))
       (node (ref U1) (pin 4))
       (node (ref C11) (pin 2)))
     (net (code 25) (name PWM)
