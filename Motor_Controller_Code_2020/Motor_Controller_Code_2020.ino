@@ -1,10 +1,11 @@
 /*
    MOTOR CONTROLLER CODE 2020
    BY: CAMERON HANSON
-   REVISION: 2.2.1
+   REVISION: 2.2.2
    RELEASE DATE: 06/20/2021
 
    RELEASE NOTES:
+   V2.2.2: Added code to check that duty cycle was within bounds of 0-100%. If it is beyond the bounds, it gets set to the appropriate bound
    V2.2.1: Fixed a bug with the reset driver where PB4 was not being set as an output and the reset process was allowed to be interrupted
    V2.2: Fixed a bug that would have caused the kart to slam to a stop if a false reset code was sent when no fault existed and restructured the code to be more readable
    V2.1: Added fault line from driver chip to code and added some fault codes to be put to the main controller if the driver chip is faulted
@@ -116,18 +117,18 @@ void loop() {
       fault = 1;
       killMotors(0); //Kill the motors but shutdown in non-emergency way
     }
-    
+
     //Ignore driver chip faults for now
-    
+
     /*// If the driver chip is in fault mode, then let the arduino know. There isn't a way  to tell why the driver has failed but there are only a few causes
-    // Causes: A VDS fault has occured meaning it saw too much voltage across the mosfet and could be damaged
-    // Causes: Internal current limit has tripped (This is disabled in this version and cannot occur)
-    if (digitalRead(FaultPin) == 0) {
+      // Causes: A VDS fault has occured meaning it saw too much voltage across the mosfet and could be damaged
+      // Causes: Internal current limit has tripped (This is disabled in this version and cannot occur)
+      if (digitalRead(FaultPin) == 0) {
       fault = 1;
       controller_status = 2; // This code means the driver chip has faulted in some way. Can be reset by sending a reset command to the controller
       killMotors(0); //Kill the motors but shutdown in non-emergency way
-    }*/
-      
+      }*/
+
     setSpeedandDir(); // Set the speed and direction of the motor driver (If any faults occur on the way, the duty cycle will be set to zero by the time it gets here)
     delay(100); //Delay the system from updating too often
   }
@@ -150,10 +151,17 @@ void receiveEvent(int howMany) {
   // function that executes whenever data is received from master
   // this function is registered as an event
   recieve_byte = Wire.read();    // receive byte as an integer (MUST DO THIS FIRST!!!!!!! otherwise a NACK will occur due to it taking too long to read)
-  last_receive_time = millis();
+  last_receive_time = millis(); //Update the last time a command was recieved
+  checkReset(); // Check to see if the system has been reset
   dir = bitRead(recieve_byte, 7); //Mask of the upper bit for the direction and shift it 7 places to be in the LSB which can be stored in a bool
   duty_cycle = recieve_byte & (B01111111); //Mask off the lower 7 bits and convert them to an int. (Need to get rid of the direction bit)
-  checkReset(); // Check to see if the system has been reset
+  if (reset_count == 0) { //If a reset event is not in the process of occuring
+    if (duty_cycle > 100){ //If the duty cycle is greater than 100, just set it to 100
+      duty_cycle = 100;
+    }else if(duty_cycle < 0){ //If the duty cycle is less than 0, set it to 0
+      duty_cycle = 0;
+    }
+  }
 }
 
 void requestEvent() {
