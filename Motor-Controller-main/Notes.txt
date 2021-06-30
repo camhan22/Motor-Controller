@@ -1,0 +1,10 @@
+System can handle 65A continously with 150A peak currents
+Operating voltage is 12-48V (Limited by MOSFET driver)
+Accepts an I2C single byte that is arranged as follows:
+
+DSSSSSSS
+
+Where D is the direction (0 or 1)
+S is the duty cycle from 0-100% (This is checked by the software to ensure it is within bounds)
+
+Returns an integer that tells how the controller is doing. If faults are present, there are seperate status codes for each failure
