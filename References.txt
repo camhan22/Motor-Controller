@@ -1,2 +1,0 @@
-http://www.modularcircuits.com/blog/articles/bridge-to-the-far-side/motor-modeling/
-https://www2.ece.ohio-state.edu/~passino/lab2_rotary_dynamics.pdf
