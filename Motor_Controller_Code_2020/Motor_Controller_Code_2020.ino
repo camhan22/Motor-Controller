@@ -24,7 +24,7 @@
 //END LIBRARIES//
 
 //DEFINES// These will save a slight amount of space for things that cannot change mid run
-#define frequency 25000 // Frequency of the motor driver (minimum is 1.5kHz due to standby mode timer on the A4956 driver chip)
+#define frequency 40000 // Frequency of the motor driver (minimum is 1.5kHz due to standby mode timer on the A4956 driver chip)
 #define start_up_delay 2000 // Specifies how long to take ramping the controller down
 #define rampDownTime 2000 // Controller must be at zero on I2C for greater than this value to allow user control
 #define watchdog_time_limit 2000 //Specifies how often the system should get a message in milliseconds
