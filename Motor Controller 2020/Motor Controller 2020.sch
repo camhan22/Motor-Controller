@@ -230,17 +230,6 @@ F 3 "" H 2350 3300 50  0001 C CNN
 	1    2350 3300
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:GND #PWR012
-U 1 1 60BC4FE1
-P 1800 3600
-F 0 "#PWR012" H 1800 3350 50  0001 C CNN
-F 1 "GND" H 1805 3427 50  0000 C CNN
-F 2 "" H 1800 3600 50  0001 C CNN
-F 3 "" H 1800 3600 50  0001 C CNN
-	1    1800 3600
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	2200 3550 2350 3550
 Connection ~ 2350 3550
@@ -254,17 +243,6 @@ Wire Wire Line
 	3100 4850 3000 4850
 Text Notes 3350 5000 0    39   ~ 0
 This pin will detect that the driver went into a fault mode \nand will relay that message to the main controller by \nI2C about the error.\nIt is held high by the input pullup resistor
-$Comp
-L power:GND #PWR014
-U 1 1 60BF2F84
-P 2450 5250
-F 0 "#PWR014" H 2450 5000 50  0001 C CNN
-F 1 "GND" H 2455 5077 50  0000 C CNN
-F 2 "" H 2450 5250 50  0001 C CNN
-F 3 "" H 2450 5250 50  0001 C CNN
-	1    2450 5250
-	1    0    0    -1  
-$EndComp
 $Comp
 L Connector_Generic:Conn_01x01 J1
 U 1 1 60C053EA
@@ -308,17 +286,6 @@ F 2 "TerminalBlock_Wuerth:Wuerth_REDCUBE-THR_WP-THRBU_74650195_THR" H 10300 800 
 F 3 "~" H 10300 800 50  0001 C CNN
 	1    10300 800 
 	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR016
-U 1 1 60D499DC
-P 1050 2850
-F 0 "#PWR016" H 1050 2600 50  0001 C CNN
-F 1 "GND" H 1055 2677 50  0000 C CNN
-F 2 "" H 1050 2850 50  0001 C CNN
-F 3 "" H 1050 2850 50  0001 C CNN
-	1    1050 2850
-	-1   0    0    1   
 $EndComp
 Text GLabel 1050 3000 2    39   Input ~ 0
 SDA_MOSI
@@ -728,7 +695,7 @@ $EndComp
 Wire Wire Line
 	8550 3200 8550 3250
 Wire Wire Line
-	8750 3600 8750 3700
+	8750 3600 8750 3650
 Wire Wire Line
 	8750 3300 8750 3250
 Wire Wire Line
@@ -739,31 +706,14 @@ Wire Wire Line
 $Comp
 L Device:C C4
 U 1 1 60B89730
-P 8300 3000
-F 0 "C4" V 8350 3100 50  0000 C CNN
-F 1 "0.1uF" V 8450 3000 50  0000 C CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.57x3.40mm_HandSolder" H 8338 2850 50  0001 C CNN
-F 3 "~" H 8300 3000 50  0001 C CNN
-	1    8300 3000
+P 8900 3000
+F 0 "C4" V 8950 3100 50  0000 C CNN
+F 1 "0.1uF" V 9050 3000 50  0000 C CNN
+F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.57x3.40mm_HandSolder" H 8938 2850 50  0001 C CNN
+F 3 "~" H 8900 3000 50  0001 C CNN
+	1    8900 3000
 	-1   0    0    -1  
 $EndComp
-$Comp
-L power:GND #PWR010
-U 1 1 60B8A336
-P 8300 2750
-F 0 "#PWR010" H 8300 2500 50  0001 C CNN
-F 1 "GND" H 8305 2577 50  0000 C CNN
-F 2 "" H 8300 2750 50  0001 C CNN
-F 3 "" H 8300 2750 50  0001 C CNN
-	1    8300 2750
-	-1   0    0    1   
-$EndComp
-Wire Wire Line
-	8300 3150 8300 3250
-Wire Wire Line
-	8300 3250 8550 3250
-Wire Wire Line
-	8300 2850 8300 2750
 $Comp
 L Device:C C3
 U 1 1 60BA2009
@@ -796,17 +746,6 @@ Dir
 Text GLabel 7800 4750 0    50   Input ~ 0
 Fault
 NoConn ~ 8000 4850
-$Comp
-L power:GND #PWR015
-U 1 1 60BE7979
-P 8550 5250
-F 0 "#PWR015" H 8550 5000 50  0001 C CNN
-F 1 "GND" H 8555 5077 50  0000 C CNN
-F 2 "" H 8550 5250 50  0001 C CNN
-F 3 "" H 8550 5250 50  0001 C CNN
-	1    8550 5250
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	8600 5100 8600 5200
 Wire Wire Line
@@ -857,17 +796,6 @@ Wire Wire Line
 	7800 4750 7850 4750
 Wire Wire Line
 	7800 4500 8000 4500
-$Comp
-L power:GND #PWR08
-U 1 1 60C770C5
-P 7400 4600
-F 0 "#PWR08" H 7400 4350 50  0001 C CNN
-F 1 "GND" H 7405 4427 50  0000 C CNN
-F 2 "" H 7400 4600 50  0001 C CNN
-F 3 "" H 7400 4600 50  0001 C CNN
-	1    7400 4600
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	7500 4500 7400 4500
 Wire Wire Line
@@ -926,17 +854,6 @@ F 2 "Resistor_SMD:R_2010_5025Metric_Pad1.40x2.65mm_HandSolder" V 6880 4050 50  0
 F 3 "~" H 6950 4050 50  0001 C CNN
 	1    6950 4050
 	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR017
-U 1 1 60C4941C
-P 6950 3800
-F 0 "#PWR017" H 6950 3550 50  0001 C CNN
-F 1 "GND" H 6955 3627 50  0000 C CNN
-F 2 "" H 6950 3800 50  0001 C CNN
-F 3 "" H 6950 3800 50  0001 C CNN
-	1    6950 3800
-	-1   0    0    1   
 $EndComp
 $Comp
 L Device:C C6
@@ -1274,4 +1191,181 @@ Wire Wire Line
 Connection ~ 6100 1350
 Wire Wire Line
 	6100 1350 6100 1500
+$Comp
+L power:GNDD #PWR0103
+U 1 1 60E412FF
+P 1050 2850
+F 0 "#PWR0103" H 1050 2600 50  0001 C CNN
+F 1 "GNDD" H 1054 2695 50  0000 C CNN
+F 2 "" H 1050 2850 50  0001 C CNN
+F 3 "" H 1050 2850 50  0001 C CNN
+	1    1050 2850
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GNDD #PWR0104
+U 1 1 60E423BA
+P 2450 5250
+F 0 "#PWR0104" H 2450 5000 50  0001 C CNN
+F 1 "GNDD" H 2454 5095 50  0000 C CNN
+F 2 "" H 2450 5250 50  0001 C CNN
+F 3 "" H 2450 5250 50  0001 C CNN
+	1    2450 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR0105
+U 1 1 60E4276C
+P 1800 3600
+F 0 "#PWR0105" H 1800 3350 50  0001 C CNN
+F 1 "GNDD" H 1804 3445 50  0000 C CNN
+F 2 "" H 1800 3600 50  0001 C CNN
+F 3 "" H 1800 3600 50  0001 C CNN
+	1    1800 3600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR0106
+U 1 1 60E43F9D
+P 8550 5250
+F 0 "#PWR0106" H 8550 5000 50  0001 C CNN
+F 1 "GNDD" H 8554 5095 50  0000 C CNN
+F 2 "" H 8550 5250 50  0001 C CNN
+F 3 "" H 8550 5250 50  0001 C CNN
+	1    8550 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR0109
+U 1 1 60E45DA5
+P 7400 4600
+F 0 "#PWR0109" H 7400 4350 50  0001 C CNN
+F 1 "GNDD" H 7404 4445 50  0000 C CNN
+F 2 "" H 7400 4600 50  0001 C CNN
+F 3 "" H 7400 4600 50  0001 C CNN
+	1    7400 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR0111
+U 1 1 60E876F0
+P 6950 3800
+F 0 "#PWR0111" H 6950 3550 50  0001 C CNN
+F 1 "GNDD" H 6954 3645 50  0000 C CNN
+F 2 "" H 6950 3800 50  0001 C CNN
+F 3 "" H 6950 3800 50  0001 C CNN
+	1    6950 3800
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR0107
+U 1 1 60F182EE
+P 8900 2750
+F 0 "#PWR0107" H 8900 2500 50  0001 C CNN
+F 1 "GND" H 8905 2577 50  0000 C CNN
+F 2 "" H 8900 2750 50  0001 C CNN
+F 3 "" H 8900 2750 50  0001 C CNN
+	1    8900 2750
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR08
+U 1 1 60F318AF
+P 3400 1400
+F 0 "#PWR08" H 3400 1150 50  0001 C CNN
+F 1 "GND" H 3405 1227 50  0000 C CNN
+F 2 "" H 3400 1400 50  0001 C CNN
+F 3 "" H 3400 1400 50  0001 C CNN
+	1    3400 1400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR010
+U 1 1 60F31C6D
+P 3600 1400
+F 0 "#PWR010" H 3600 1150 50  0001 C CNN
+F 1 "GNDD" H 3604 1245 50  0000 C CNN
+F 2 "" H 3600 1400 50  0001 C CNN
+F 3 "" H 3600 1400 50  0001 C CNN
+	1    3600 1400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Net-Tie_2 NT1
+U 1 1 60F32F60
+P 3500 1200
+F 0 "NT1" H 3500 1381 50  0000 C CNN
+F 1 "Net-Tie_2" H 3500 1290 50  0000 C CNN
+F 2 "NetTie:NetTie-2_SMD_Pad2.0mm" H 3500 1200 50  0001 C CNN
+F 3 "~" H 3500 1200 50  0001 C CNN
+	1    3500 1200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3600 1200 3600 1400
+Wire Wire Line
+	3400 1200 3400 1400
+Wire Wire Line
+	8750 3250 8900 3250
+Wire Wire Line
+	8900 3250 8900 3150
+Connection ~ 8750 3250
+Wire Wire Line
+	8900 2850 8900 2750
+$Comp
+L Connector:TestPoint TP6
+U 1 1 60F8CF30
+P 8450 2800
+F 0 "TP6" H 8508 2918 50  0000 L CNN
+F 1 "TestPoint" H 8500 2850 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 8650 2800 50  0001 C CNN
+F 3 "~" H 8650 2800 50  0001 C CNN
+	1    8450 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP5
+U 1 1 60F8D930
+P 8000 2800
+F 0 "TP5" H 8058 2918 50  0000 L CNN
+F 1 "TestPoint" H 8050 2850 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 8200 2800 50  0001 C CNN
+F 3 "~" H 8200 2800 50  0001 C CNN
+	1    8000 2800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8450 2800 8450 2950
+Wire Wire Line
+	8450 2950 8400 2950
+Wire Wire Line
+	8400 2950 8400 3400
+Connection ~ 8400 3400
+Wire Wire Line
+	8000 2800 8050 2800
+Wire Wire Line
+	8050 2800 8050 3100
+Wire Wire Line
+	8050 3100 7850 3100
+Wire Wire Line
+	7850 3100 7850 3400
+Connection ~ 7850 3400
+$Comp
+L Connector:TestPoint TP7
+U 1 1 60FA77BA
+P 9300 2950
+F 0 "TP7" H 9358 3068 50  0000 L CNN
+F 1 "TestPoint" H 9350 3000 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 9500 2950 50  0001 C CNN
+F 3 "~" H 9500 2950 50  0001 C CNN
+	1    9300 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8750 3650 9300 3650
+Wire Wire Line
+	9300 2950 9300 3650
+Connection ~ 8750 3650
+Wire Wire Line
+	8750 3650 8750 3700
 $EndSCHEMATC
