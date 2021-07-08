@@ -118,19 +118,17 @@ void loop() {
       killMotors(0); //Kill the motors but shutdown in non-emergency way
     }
 
-    //Ignore driver chip faults for now
-
-    /*// If the driver chip is in fault mode, then let the arduino know. There isn't a way  to tell why the driver has failed but there are only a few causes
+    // If the driver chip is in fault mode, then let the arduino know. There isn't a way  to tell why the driver has failed but there are only a few causes
       // Causes: A VDS fault has occured meaning it saw too much voltage across the mosfet and could be damaged
       // Causes: Internal current limit has tripped (This is disabled in this version and cannot occur)
       if (digitalRead(FaultPin) == 0) {
       fault = 1;
       controller_status = 2; // This code means the driver chip has faulted in some way. Can be reset by sending a reset command to the controller
       killMotors(0); //Kill the motors but shutdown in non-emergency way
-      }*/
+      }
 
     setSpeedandDir(); // Set the speed and direction of the motor driver (If any faults occur on the way, the duty cycle will be set to zero by the time it gets here)
-    delay(100); //Delay the system from updating too often
+    delay(10); //Delay the system from updating too often (having higher refresh rate may help with VDS faults since the changes will be smaller
   }
 }
 
@@ -165,7 +163,7 @@ void receiveEvent(int howMany) {
 }
 
 void requestEvent() {
-  Wire.write(controller_status); // Give the main controller the status of this motor driver (0 means everything is okay)(1 means a watchdog timeout)()()
+  Wire.write(controller_status); // Give the main controller the status of this motor driver (0 means everything is okay)(1 means a watchdog timeout)
 }
 
 void setSpeedandDir() {
