@@ -12,7 +12,6 @@ void setup() {
 
   pinMode(5, INPUT); // Pin used to reset the controller
   pinMode(6, OUTPUT); // Used to reset the controller
-  pinMode(A0, INPUT); //Used to set the speed
   pinMode(7, INPUT_PULLUP); //Used to set the direction
 
   // Start the motor controller
@@ -56,5 +55,5 @@ void loop() {
 
     delay(2000);
   }
-  delay(200);
+  delay(10);
 }
