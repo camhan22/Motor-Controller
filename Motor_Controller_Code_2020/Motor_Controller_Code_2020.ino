@@ -1,10 +1,11 @@
 /*
    MOTOR CONTROLLER CODE 2020
    BY: CAMERON HANSON
-   REVISION: 2.2.2
-   RELEASE DATE: 06/20/2021
+   REVISION: 2.3
+   RELEASE DATE: 08/06/2021
 
    RELEASE NOTES:
+   V2.3: Added status LED indication to help diagnose problems without a computer being attached. Also added a deadband to the throttle to avoid wasting power
    V2.2.2: Added code to check that duty cycle was within bounds of 0-100%. If it is beyond the bounds, it gets set to the appropriate bound
    V2.2.1: Fixed a bug with the reset driver where PB4 was not being set as an output and the reset process was allowed to be interrupted
    V2.2: Fixed a bug that would have caused the kart to slam to a stop if a false reset code was sent when no fault existed and restructured the code to be more readable
@@ -25,12 +26,16 @@
 
 //DEFINES// These will save a slight amount of space for things that cannot change mid run
 #define frequency 25000 // Frequency of the motor driver (minimum is 1.5kHz due to standby mode timer on the A4956 driver chip)
+#define deadband 10 //If the incoming duty cycle is less than this limit, then it will make the motor output a zero PWM signal to avoid wasting power when it cannot move
 #define start_up_delay 2000 // Specifies how long to take ramping the controller down
 #define rampDownTime 2000 // Controller must be at zero on I2C for greater than this value to allow user control
 #define watchdog_time_limit 2000 //Specifies how often the system should get a message in milliseconds
 #define DirPin 12 // Tells which pin the direction pin is on
 #define ModePin 8 // Defines which pin the mode selector for the driver chip is
 #define FaultPin 5 // Defines which pin the fault pin from the driver chip is on
+#define StatusRedPin 0 //Defines which pin the red LED status light is on
+#define StatusYellowPin 1 //Defines which pin the yellow LED status light is on
+#define StatusBlinkRate 500 //defines how long each state will last. Total blink time is twice this.
 //The above 2 pins need to be flipped in order to make this work with the new board design
 
 //USER FUNCTIONS//
@@ -44,6 +49,7 @@ void resetDriver(); //Function to reset driver chip
 
 void waitForZeroThrottle(); // Function to listen to I2C communication and wait for throttle to be set at zero before it will allow for user control
 void checkReset(); // Checks to see if the system has been issued the reset command
+void setLEDStatus(); //Sets the LED lights depending on the status of the system
 //END USER FUNCTIONS
 
 
@@ -61,7 +67,8 @@ byte controller_status = 0;// Tells the controller if there are any problems and
 bool fault = 0; // Tells controller if it is faulted or not. This can be cleared by sending a specific command to the controller
 
 unsigned long last_receive_time = 0; // Holds when the last time an I2C command was given to the board
-unsigned long current_time = 0;// Holds the current time of the controller
+
+unsigned long last_status_time = 0; //Holds the last time the LED changed state
 //END USER PARAMETERS//
 
 void setup() {
@@ -90,6 +97,14 @@ void setup() {
   //Set the DIR pin as an output
   pinMode(DirPin, OUTPUT);
 
+  //Set status lights as outputs
+  pinMode(StatusRedPin, OUTPUT);
+  pinMode(StatusYellowPin, OUTPUT);
+
+  //Set the status lights to off in the beginning
+  digitalWrite(StatusRedPin, LOW);
+  digitalWrite(StatusYellowPin, LOW);
+  
   setup_FAST_PWM(); // Setup and start hardware PWM generator (MUST DO THIS FIRST!!!!) (Messes up some bits in the port that controls the I2C bus)
 
   Wire.begin(Address);// join i2c bus with address that was read by the dip switches (This needs to be unique for each controller on the system)
@@ -113,7 +128,7 @@ void loop() {
       controller_status = 0; // The system should be good after this
     }
   } else { //If no active faults exist, check for new ones and if none exist, then set the speed and direction
-    if (current_time - last_receive_time > watchdog_time_limit) { // Check if commands have stopped for too long
+    if (millis() - last_receive_time > watchdog_time_limit) { // Check if commands have stopped for too long
       controller_status = 1;
       fault = 1;
       killMotors(0); //Kill the motors but shutdown in non-emergency way
@@ -127,7 +142,7 @@ void loop() {
       controller_status = 2; // This code means the driver chip has faulted in some way. Can be reset by sending a reset command to the controller
       killMotors(0); //Kill the motors but shutdown in non-emergency way
       }
-
+    setLEDStatus(); //Set the status LEDs
     setSpeedandDir(); // Set the speed and direction of the motor driver (If any faults occur on the way, the duty cycle will be set to zero by the time it gets here)
     delay(10); //Delay the system from updating too often (having higher refresh rate may help with VDS faults since the changes will be smaller
   }
@@ -157,7 +172,7 @@ void receiveEvent(int howMany) {
   if (reset_count == 0) { //If a reset event is not in the process of occuring
     if (duty_cycle > 100){ //If the duty cycle is greater than 100, just set it to 100
       duty_cycle = 100;
-    }else if(duty_cycle < 0){ //If the duty cycle is less than 0, set it to 0
+    }else if(duty_cycle < deadband){ //If the duty cycle is less than 0, set it to 0
       duty_cycle = 0;
     }
   }
@@ -236,4 +251,24 @@ void resetDriver() {
 
   setup_FAST_PWM();
   interrupts(); //Allow interrupts after the driver chip is fully reset
+}
+
+void setLEDStatus(){
+  if(controller_status == 0){ //If the controller is working properly, then turn the status off
+    digitalWrite(StatusRedPin, LOW);
+    digitalWrite(StatusYellowPin, LOW);
+  }else if(controller_status == 15){ //If the controller is waiting for the throttle to reset, put the yellow light on to indicate that
+    digitalWrite(StatusRedPin, LOW);
+    digitalWrite(StatusYellowPin, HIGH);
+  }else if(controller_status == 1){ //If the driver is faulted due to a communication issue, set the red led to on
+    digitalWrite(StatusRedPin, HIGH);
+    digitalWrite(StatusYellowPin, LOW);
+  }else if(controller_status == 2){ //If a VDS fault has occured, blink the red led
+    digitalWrite(StatusYellowPin, LOW);
+    if(millis - last_status_time > StatusBlinkRate){
+      digitalWrite(StatusREDPin, !digitalRead(StatusREDPin)); //Toggle the LED
+      last_status_time = millis(); //Update the last time the state was changed
+    }
+  }
+  
 }
