@@ -23,14 +23,9 @@ void setup() {
   Wire.begin(); // join i2c bus (address optional for master)
   Serial.begin(9600);
 
-  pinMode(5, INPUT); // Pin used to reset the controller
-  pinMode(6, OUTPUT); // Used to reset the controller
-  pinMode(7, INPUT_PULLUP); //Used to set the direction
+  pinMode(5, INPUT_PULLUP); // Pin used to reset the controller
+  pinMode(6, INPUT_PULLUP); //Used to set the direction
 
-  // Start the motor controller
-  digitalWrite(6, LOW);
-  delay(300);
-  digitalWrite(6, HIGH);
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));
     for (;;); // Don't proceed, loop forever
@@ -57,7 +52,7 @@ void loop() {
 
 
 
-  dir = digitalRead(7);
+  dir = digitalRead(6);
   value = bitWrite(throttle_val, 7, dir);
 
   Wire.beginTransmission(7); // transmit to device #8
@@ -68,7 +63,7 @@ void loop() {
   motor_status = Wire.read();
   //Serial.println(motor_status); // Print out the status
 
-  if (digitalRead(5) == 1) { // If the reset pin is on, then reset
+  if (digitalRead(5) == 0) { // If the reset pin is on, then reset
     Serial.println("Reset");
 
     Wire.beginTransmission(7); // transmit to device #8
