@@ -1978,6 +1978,11 @@
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
     )
+    (model "${KIPRJMOD}/74650195 (rev1).stp"
+      (at (xyz 0 0 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
   )
 
   (module TerminalBlock_Wuerth:Wuerth_REDCUBE-THR_WP-THRBU_74650195_THR (layer F.Cu) (tedit 60E5BF7D) (tstamp 60E62B50)
@@ -2095,6 +2100,11 @@
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
     )
+    (model "${KIPRJMOD}/74650195 (rev1).stp"
+      (at (xyz 0 0 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
   )
 
   (module TerminalBlock_Wuerth:Wuerth_REDCUBE-THR_WP-THRBU_74650195_THR (layer F.Cu) (tedit 60E5BF7D) (tstamp 60E62B8C)
@@ -2147,6 +2157,11 @@
     (pad 1 thru_hole circle (at 4.435 4.435) (size 3.2 3.2) (drill 1.85) (layers *.Cu *.Mask)
       (net 4 MOTOR-))
     (model ${KISYS3DMOD}/TerminalBlock_Wuerth.3dshapes/Wuerth_REDCUBE-THR_WP-THRBU_74650195_THR.wrl
+      (at (xyz 0 0 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
+    (model "${KIPRJMOD}/74650195 (rev1).stp"
       (at (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
