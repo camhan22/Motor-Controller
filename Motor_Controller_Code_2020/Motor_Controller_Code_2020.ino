@@ -23,7 +23,7 @@
 
 //LIBRARIES//
 #include <Wire.h> //Add the wire library for the I2C protocol
-#include "CRC8.h" //Add the CRC8 library for calculating 8 bit crc values
+ #include "CRC8.h" //Add the CRC8 library for calculating 8 bit crc values
 #include "CRC.h" //Include the CRC library which is used in the crc8 library
 //END LIBRARIES//
 
