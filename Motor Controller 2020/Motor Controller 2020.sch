@@ -779,7 +779,7 @@ Wire Wire Line
 Wire Wire Line
 	3650 5750 3650 6000
 Wire Wire Line
-	3850 6200 3850 6100
+	3850 6200 3850 6150
 $Comp
 L Mechanical:MountingHole H1
 U 1 1 60CD765C
@@ -1346,4 +1346,35 @@ Text Notes 2500 6700 0    50   ~ 0
 YLW
 Text Notes 2500 6200 0    50   ~ 0
 RED
+$Comp
+L Device:R R9
+U 1 1 6172CADC
+P 4100 5900
+F 0 "R9" V 4000 5750 50  0000 C CNN
+F 1 "15k" V 4000 5900 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 4030 5900 50  0001 C CNN
+F 3 "~" H 4100 5900 50  0001 C CNN
+	1    4100 5900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR024
+U 1 1 6172D985
+P 4100 5650
+F 0 "#PWR024" H 4100 5500 50  0001 C CNN
+F 1 "+5V" H 4100 5800 50  0000 C CNN
+F 2 "" H 4100 5650 50  0001 C CNN
+F 3 "" H 4100 5650 50  0001 C CNN
+	1    4100 5650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 5650 4100 5750
+Wire Wire Line
+	4100 6050 4100 6150
+Wire Wire Line
+	4100 6150 3850 6150
+Connection ~ 3850 6150
+Wire Wire Line
+	3850 6150 3850 6100
 $EndSCHEMATC
