@@ -98,7 +98,7 @@ void setup() {
   controllerAddress |= controllerAddress_b0; //  Add the last bit to the controllerAddress
 
   incoming_CRC.setPolynome(0xD5); //Polynomial to use for CRC generation (Uses standard CRC-8 polynome)
-  
+
   //Put the controller in slow decay mode (Braking)
   pinMode(MODE_PIN, OUTPUT);
   digitalWrite(MODE_PIN, HIGH);
@@ -118,12 +118,13 @@ void setup() {
   digitalWrite(STATUS_YELLOW_PIN, LOW);
 
   setup_Fast_PWM(); // Setup and start hardware PWM generator (MUST DO THIS FIRST!!!!) (Messes up some bits in the port that controls the I2C bus)
-
+  reset_Driver(); //Reset the driver chip on controller startup
+  
   Wire.begin(controllerAddress);// join i2c bus with controllerAddress that was read by the dip switches (This needs to be unique for each controller on the system)
   Wire.onReceive(recieve_Event); // Add an event to the arduino for receiving I2C communications
   Wire.onRequest(request_Event); // Add an event for when the controller is requested to give information
 
-  reset_Driver(); //Reset the driver chip on controller startup
+
   wait_Zero_Throttle(); // Wait until the throttle has been reset to 0% PWM to ensure it doesn't takeoff unexpectedly
 }
 
@@ -175,7 +176,7 @@ void recieve_Event(int howMany) {
   // this function is registered as an event
   byte recieve_byte = Wire.read();    // receive byte as an integer (MUST DO THIS FIRST!!!!!!! otherwise a NACK will occur due to it taking too long to read)
   byte crc_byte = Wire.read(); //Read in the CRC byte
-  
+
   if (is_Data_Good(recieve_byte, crc_byte) == 1) { //Check the CRC for the system to make sure data is valid
     lastReceiveTime = millis(); //Update the last time a command was recieved
     check_Reset(recieve_byte); // Check to see if the system has been reset
