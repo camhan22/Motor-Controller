@@ -1377,4 +1377,21 @@ Wire Wire Line
 Connection ~ 3850 6150
 Wire Wire Line
 	3850 6150 3850 6100
+$Comp
+L Device:R R10
+U 1 1 6187A4F9
+P 2700 950
+F 0 "R10" H 2770 996 50  0000 L CNN
+F 1 "15k" H 2770 905 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 2630 950 50  0001 C CNN
+F 3 "~" H 2700 950 50  0001 C CNN
+	1    2700 950 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2700 800  2350 800 
+Connection ~ 2350 800 
+Wire Wire Line
+	2700 1100 2350 1100
+Connection ~ 2350 1100
 $EndSCHEMATC

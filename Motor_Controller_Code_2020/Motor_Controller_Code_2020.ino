@@ -1,10 +1,11 @@
 /*
    MOTOR CONTROLLER CODE 2020
    BY: CAMERON HANSON
-   REVISION: 3.0
+   REVISION: 3.1
    RELEASE DATE: 10/18/2021
 
    RELEASE NOTES:
+   V3.1: Changed how address selection is done to have consistency with the PCB
    V3.0: Added CRC check for incoming data to ensure that the data was actually valid, this avoids a problem where spotty connections can lead to the system randomly jumping and going out of control
    V2.3: Added status LED indication to help diagnose problems without a computer being attached. Also added a DEADBAND to the throttle to avoid wasting power
    V2.2.2: Added code to check that duty cycle was within bounds of 0-100%. If it is beyond the bounds, it gets set to the appropriate bound
@@ -68,6 +69,8 @@ int controllerDutyCycle = 0; // Holds the percentage that will be passed to the 
 //controller reset variables
 byte resetCount = 0; // Holds a number used to determine if the first byte of a reset command happened
 bool resetController = 0; // Holds whether a reset should be initaited
+byte dataCount = 0; //Holds how many data bytes have been recieved, a complete packet is 2 bytes (one data and one crc)
+byte lastData = 0; //Holds the last recieved data byte for crc checking
 
 //controller status variables
 byte controllerStatus = 0; // Tells the controller if there are any problems and if so, what they are (This is requested by the master each loop)
@@ -88,9 +91,9 @@ void setup() {
   pinMode(4, INPUT_PULLUP); // LSB
 
   //Read the controllerAddress values on startup and connect to the I2C bus as that controllerAddress
-  bool controllerAddress_b2 = digitalRead(2); // MSB
-  bool controllerAddress_b1 = digitalRead(3);
-  bool controllerAddress_b0 = digitalRead(4); // LSB
+  bool controllerAddress_b2 = !digitalRead(2); // MSB
+  bool controllerAddress_b1 = !digitalRead(3);
+  bool controllerAddress_b0 = !digitalRead(4); // LSB
 
   //Order the bits to give the correct controllerAddress for the I2C bus
   controllerAddress |= controllerAddress_b2 << 2; // Shift the MSB by two positions
@@ -119,7 +122,7 @@ void setup() {
 
   setup_Fast_PWM(); // Setup and start hardware PWM generator (MUST DO THIS FIRST!!!!) (Messes up some bits in the port that controls the I2C bus)
   reset_Driver(); //Reset the driver chip on controller startup
-  
+
   Wire.begin(controllerAddress);// join i2c bus with controllerAddress that was read by the dip switches (This needs to be unique for each controller on the system)
   Wire.onReceive(recieve_Event); // Add an event to the arduino for receiving I2C communications
   Wire.onRequest(request_Event); // Add an event for when the controller is requested to give information
@@ -175,19 +178,18 @@ void recieve_Event(int howMany) {
   // function that executes whenever data is received from master
   // this function is registered as an event
   byte recieve_byte = Wire.read();    // receive byte as an integer (MUST DO THIS FIRST!!!!!!! otherwise a NACK will occur due to it taking too long to read)
-  byte crc_byte = Wire.read(); //Read in the CRC byte
+  byte crc_byte = Wire.read(); //Read in the crc byte from the bus
 
-  if (is_Data_Good(recieve_byte, crc_byte) == 1) { //Check the CRC for the system to make sure data is valid
+  if (is_Data_Good(recieve_byte, crc_byte) == 1) { //Check if the last recieved byte (the data) crc and the current byte (the crc) are the same
     lastReceiveTime = millis(); //Update the last time a command was recieved
-    check_Reset(recieve_byte); // Check to see if the system has been reset
+
     controllerDirection = bitRead(recieve_byte, 7); //Mask of the upper bit for the direction and shift it 7 places to be in the LSB which can be stored in a bool
     controllerDutyCycle = recieve_byte & (B01111111); //Mask off the lower 7 bits and convert them to an int. (Need to get rid of the direction bit)
-    if (resetCount == 0) { //If a reset event is not in the process of occuring
-      if (controllerDutyCycle > 100) { //If the duty cycle is greater than 100, just set it to 100
-        controllerDutyCycle = 100;
-      } else if (controllerDutyCycle < DEADBAND) { //If the duty cycle is less than 0, set it to 0
-        controllerDutyCycle = 0;
-      }
+
+    if (controllerDutyCycle > 100) { //If the duty cycle is greater than 100, just set it to 100
+      controllerDutyCycle = 100;
+    } else if (controllerDutyCycle < DEADBAND) { //If the duty cycle is less than 0, set it to 0
+      controllerDutyCycle = 0;
     }
   }
 }
